@@ -9,13 +9,29 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <!-- Matter.js for physics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Vanta.js for animated backgrounds -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <!-- Vanilla Tilt for 3D effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 </head>
 
 <body>
-    <!-- Header -->
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-outline"></div>
+
+    <!-- Hero Background Animation -->
+    <div id="hero-vanta"></div>
     <header class="header">
         <div class="container">
             <a href="#" class="logo">Portfolio.</a>
@@ -42,27 +58,48 @@
         <div class="container hero-content">
             <div class="hero-text hidden-left">
                 <h3 class="greeting">Hello, I'm</h3>
-                <h1 class="name">Sudharsan S</h1>
+                <h1 class="name">SUDHARSAN S</h1>
                 <h2 class="role">I am a <span class="typing-text"></span></h2>
                 <p class="description">
-                    Building digital experiences with modern technologies.
-                    Adding creativity to every line of code.
+                    Motivated Full Stack Developer pursuing B.Sc. in Computer Science (AI & Data Science). 
+                    Experienced in building responsive web applications, database-driven systems, and workflow automation.
                 </p>
                 <div class="cta-buttons">
                     <a href="#projects" class="btn btn-primary">View Work</a>
                     <a href="#contact" class="btn btn-secondary">Contact Me</a>
                 </div>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/sudharsanselvarajj-maker" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/sudharsan-s-2b7571381?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/sudhar__1507?utm_source=qr&igsh=MTV5YzFhcnc5bzliMQ==" target="_blank"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
             <div class="hero-image hidden-right">
-                <!-- Placeholder for user image or illustration -->
-                <div class="img-placeholder">
-                    <i class="fas fa-code"></i>
+                <!-- Hanging ID Card -->
+                <div id="hanging-id-wrapper">
+                    <canvas id="physics-canvas"></canvas>
+                    <div id="id-card" class="id-card-glass">
+                        <div class="card-header">
+                            <div class="card-chip"></div>
+                            <div class="card-hole"></div>
+                            <div class="verified-badge"><i class="fas fa-check-circle"></i></div>
+                        </div>
+                        <div class="card-content">
+                            <div class="img-container">
+                                <img src="profile.png" alt="Sudharsan S" class="profile-img">
+                            </div>
+                            <div class="card-text">
+                                <h3 class="card-name">Sudharsan S</h3>
+                                <p class="card-role">Full Stack Developer</p>
+                                <div class="card-meta">
+                                    <span><i class="fas fa-location-dot"></i> Tiruppur, TN</span>
+                                    <span><i class="fas fa-id-badge"></i> UID: #2026-SS</span>
+                                </div>
+                            </div>
+                            <hr class="card-divider">
+                        </div>
+                        <div class="card-footer-badge">VERIFIED PRO</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -74,36 +111,67 @@
     <!-- About Section -->
     <section id="about" class="about section">
         <div class="container">
-            <h2 class="section-title hidden-bottom">About Me</h2>
+            <div class="about-header hidden-bottom">
+                <h2 class="section-title">About Me</h2>
+            </div>
             <div class="about-content">
                 <div class="about-img hidden-left">
-                    <div class="img-card">
-                        <i class="fas fa-user-astronaut"></i>
+                    <div class="terminal-card">
+                        <div class="terminal-header">
+                            <div class="terminal-buttons">
+                                <span class="bg-terminal-red"></span>
+                                <span class="bg-terminal-yellow"></span>
+                                <span class="bg-terminal-green"></span>
+                            </div>
+                            <div class="terminal-title">bash — about.py</div>
+                        </div>
+                        <div class="terminal-body">
+                            <div class="code-line"><span class="keyword">class</span> <span class="class-name">Developer</span>:</div>
+                            <div class="code-line indent-1"><span class="keyword">def</span> <span class="func-name">__init__</span>(self):</div>
+                            <div class="code-line indent-2">self.name = <span class="string">"Sudharsan S"</span></div>
+                            <div class="code-line indent-2">self.role = <span class="string">"Fullstack Architect"</span></div>
+                            <div class="code-line indent-2">self.location = <span class="string">"Tiruppur, India"</span></div>
+                            <div class="code-line indent-2">self.focus = [<span class="string">"AI"</span>, <span class="string">"Web"</span>, <span class="string">"Automation"</span>]</div>
+                            <div class="code-line indent-2">self.stack = [<span class="string">"Python"</span>, <span class="string">"JS"</span>, <span class="string">"Node"</span>, <span class="string">"React"</span>]</div>
+                            <div class="code-line">&nbsp;</div>
+                            <div class="code-line indent-1"><span class="keyword">def</span> <span class="func-name">passion</span>(self):</div>
+                            <div class="code-line indent-2"><span class="keyword">return</span> <span class="string">"Building the Future"</span></div>
+                            <div class="code-line">&nbsp;</div>
+                            <div class="code-line indent-1"><span class="keyword">def</span> <span class="func-name">current_status</span>(self):</div>
+                            <div class="code-line indent-2"><span class="keyword">return</span> {<span class="string">"availability"</span>: <span class="keyword">True</span>, <span class="string">"learning"</span>: <span class="string">"AI Scalability"</span>}</div>
+                        </div>
                     </div>
                 </div>
                 <div class="about-text hidden-right">
-                    <h3>Creative Developer based in [Location]</h3>
+                    <h3 class="syne-font">Full Stack Developer based in Tiruppur</h3>
                     <p>
-                        I'm a passionate developer who loves to create beautiful and functional websites.
-                        With a strong foundation in web technologies and a keen eye for design,
-                        I strive to build user-centric applications that solve real-world problems.
+                        I'm a motivated Full Stack Developer with strong skills in Python, JavaScript, and modern web architectures. 
+                        I specialize in building responsive applications that bridge the gap between complex backend logic and intuitive frontend experiences.
                     </p>
                     <p>
-                        My journey in web development started with a curiosity for how things work on the internet,
-                        and it has evolved into a career where I constantly learn and adapt to new trends.
+                        Currently pursuing my B.Sc. in AI & Data Science, I leverage LLMs and prompt engineering to accelerate development and optimize code performance.
                     </p>
-                    <div class="stats">
-                        <div class="stat-item">
-                            <h4>2+</h4>
-                            <p>Years Experience</p>
+                    <div class="exp-grid">
+                        <div class="exp-item">
+                            <i class="fas fa-layer-group"></i>
+                            <div class="exp-info">
+                                <h4>Frontend</h4>
+                                <p>React, UI/UX</p>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <h4>20+</h4>
-                            <p>Projects Completed</p>
+                        <div class="exp-item">
+                            <i class="fas fa-server"></i>
+                            <div class="exp-info">
+                                <h4>Backend</h4>
+                                <p>Python, Node.js</p>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <h4>10+</h4>
-                            <p>Happy Clients</p>
+                        <div class="exp-item">
+                            <i class="fas fa-brain"></i>
+                            <div class="exp-info">
+                                <h4>AI / ML</h4>
+                                <p>Prompt Eng.</p>
+                            </div>
                         </div>
                     </div>
                     <a href="resume.pdf" class="btn btn-primary" download>Download CV</a>
@@ -115,31 +183,56 @@
     <!-- Skills Section -->
     <section id="skills" class="skills section">
         <div class="container">
-            <h2 class="section-title hidden-bottom">My Skills</h2>
-            <div class="skills-content">
-                <div class="skills-card hidden-bottom" style="transition-delay: 100ms;">
-                    <i class="fab fa-html5"></i>
-                    <h3>HTML5</h3>
+            <div class="skills-header hidden-bottom">
+                <h2 class="section-title">My Technology Universe</h2>
+                <p class="section-subtitle">Technologies that power my development journey.</p>
+            </div>
+
+            <!-- Scrolling Marquee -->
+            <div class="marquee-tracks" id="marquee-container"></div>
+
+            <!-- Mobile Fallback Grid (Hidden by default) -->
+            <div id="skill-grid-fallback" class="hidden"></div>
+
+            <!-- Skill Detail Popup -->
+            <div id="skill-detail-popup" class="sdp-hidden">
+                <div class="sdp-card">
+                    <button class="sdp-close" id="sdp-close-btn"><i class="fas fa-times"></i></button>
+                    <div class="sdp-header">
+                        <div class="sdp-icon" id="sdp-icon"></div>
+                        <div>
+                            <div class="sdp-name" id="sdp-name"></div>
+                            <div class="sdp-category" id="sdp-category"></div>
+                        </div>
+                    </div>
+                    <div class="sdp-body">
+                        <div class="sdp-section">
+                            <div class="sdp-label">What is it?</div>
+                            <div class="sdp-text" id="sdp-what"></div>
+                        </div>
+                        <div class="sdp-section">
+                            <div class="sdp-label">How I use it</div>
+                            <div class="sdp-text" id="sdp-use"></div>
+                        </div>
+                        <div class="sdp-section">
+                            <div class="sdp-label">Projects</div>
+                            <div class="sdp-tags" id="sdp-projects"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="skills-card hidden-bottom" style="transition-delay: 200ms;">
-                    <i class="fab fa-css3-alt"></i>
-                    <h3>CSS3</h3>
-                </div>
-                <div class="skills-card hidden-bottom" style="transition-delay: 300ms;">
-                    <i class="fab fa-js"></i>
-                    <h3>JavaScript</h3>
-                </div>
-                <div class="skills-card hidden-bottom" style="transition-delay: 400ms;">
-                    <i class="fab fa-react"></i>
-                    <h3>React</h3>
-                </div>
-                <div class="skills-card hidden-bottom" style="transition-delay: 500ms;">
-                    <i class="fab fa-node-js"></i>
-                    <h3>Node.js</h3>
-                </div>
-                <div class="skills-card hidden-bottom" style="transition-delay: 600ms;">
-                    <i class="fas fa-database"></i>
-                    <h3>Database</h3>
+            </div>
+
+            <!-- Old Skill Info Popup (kept for compatibility) -->
+            <div id="skill-popup" class="skill-popup-hidden">
+                <div class="popup-content">
+                    <button class="popup-close"><i class="fas fa-times"></i></button>
+                    <div class="popup-header">
+                        <div class="popup-icon"></div>
+                        <h3 id="popup-name">Skill Name</h3>
+                    </div>
+                    <div class="popup-body">
+                        <div id="popup-desc"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -148,39 +241,21 @@
     <!-- Projects Section -->
     <section id="projects" class="projects section">
         <div class="container">
-            <h2 class="section-title hidden-bottom">My Projects</h2>
+            <h2 class="section-title">My Projects</h2>
             <div class="projects-grid">
+
                 <!-- Project 1 -->
-                <div class="project-card hidden-bottom">
+                <div class="project-card">
                     <div class="project-img">
-                        <div class="placeholder-img color-1"></div>
+                        <img src="images/fitgear-cover.png" alt="FitGear Sports E-Commerce" class="project-cover-img">
                     </div>
                     <div class="project-info">
-                        <h3>E-Commerce Web App</h3>
-                        <p>A fully functional e-commerce platform with cart and payment features.</p>
+                        <h3>FitGear – Sports E-Commerce</h3>
+                        <p>A responsive sports equipment website with product catalogs, user authentication, and shopping cart features.</p>
                         <div class="tags">
-                            <span>React</span>
-                            <span>Node.js</span>
-                            <span>MongoDB</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                            <a href="#"><i class="fab fa-github"></i> Code</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project 2 -->
-                <div class="project-card hidden-bottom" style="transition-delay: 200ms;">
-                    <div class="project-img">
-                        <div class="placeholder-img color-2"></div>
-                    </div>
-                    <div class="project-info">
-                        <h3>Portfolio Website</h3>
-                        <p>A personal portfolio website with cool animations and dark mode.</p>
-                        <div class="tags">
-                            <span>HTML</span>
-                            <span>CSS</span>
+                            <span>Python</span>
                             <span>JavaScript</span>
+                            <span>CSS3</span>
                         </div>
                         <div class="project-links">
                             <a href="#"><i class="fas fa-external-link-alt"></i> Live Demo</a>
@@ -188,17 +263,40 @@
                         </div>
                     </div>
                 </div>
-                <!-- Project 3 -->
-                <div class="project-card hidden-bottom" style="transition-delay: 400ms;">
+
+                <!-- Project 2 -->
+                <div class="project-card">
                     <div class="project-img">
-                        <div class="placeholder-img color-3"></div>
+                        <img src="images/bus-cover.png" alt="VETIAS College Bus System" class="project-cover-img">
                     </div>
                     <div class="project-info">
-                        <h3>Task Management App</h3>
-                        <p>A productivity tool to manage daily tasks and collaborate with teams.</p>
+                        <h3>VETIAS College Bus Attendance & Notification System</h3>
+                        <p>Flask-based attendance tracking using QR/Barcodes with real-time SMTP email notifications and MySQL integration.</p>
                         <div class="tags">
-                            <span>Vue.js</span>
-                            <span>Firebase</span>
+                            <span>Flask</span>
+                            <span>MySQL</span>
+                            <span>SMTP</span>
+                            <span>Render</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://vetias-college-bus-management-system-3sc6.onrender.com" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                            <a href="https://github.com/sudharsanselvarajj-maker/vetias-college-bus-management-system" target="_blank"><i class="fab fa-github"></i> Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="images/portfolio-cover.png" alt="Personal Portfolio" class="project-cover-img">
+                    </div>
+                    <div class="project-info">
+                        <h3>Responsive Personal Portfolio</h3>
+                        <p>Designed and developed a professional portfolio to showcase technical projects and skills with mobile-first design.</p>
+                        <div class="tags">
+                            <span>Modern CSS</span>
+                            <span>JavaScript</span>
+                            <span>Responsive</span>
                         </div>
                         <div class="project-links">
                             <a href="#"><i class="fas fa-external-link-alt"></i> Live Demo</a>
@@ -206,33 +304,46 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Experience Section -->
+    <!-- Certifications Section -->
     <section id="experience" class="experience section">
         <div class="container">
-            <h2 class="section-title hidden-bottom">Experience</h2>
+            <h2 class="section-title hidden-bottom">Certifications</h2>
             <div class="timeline">
-                <!-- Experience Item 1 -->
+                <!-- Cert 1 -->
                 <div class="timeline-item hidden-bottom">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
-                        <h3>Senior Web Developer</h3>
-                        <h4>Tech Company Inc. | 2022 - Present</h4>
-                        <p>Leading the frontend team, building scalable web applications using React and Node.js.
-                            Improved site performance by 40%.</p>
+                        <h3>Basic Level Prompt Engineering</h3>
+                        <h4>Infosys Springboard</h4>
                     </div>
                 </div>
-                <!-- Experience Item 2 -->
+                <!-- Cert 2 -->
+                <div class="timeline-item hidden-bottom" style="transition-delay: 100ms;">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Web & Application Development Workshop</h3>
+                        <h4>Rubrich Technologies</h4>
+                    </div>
+                </div>
+                <!-- Cert 3 -->
                 <div class="timeline-item hidden-bottom" style="transition-delay: 200ms;">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
-                        <h3>Junior Web Developer</h3>
-                        <h4>Creative Agency | 2020 - 2022</h4>
-                        <p>Collaborated with designers to implement responsive websites. Developed custom WordPress
-                            themes and plugins.</p>
+                        <h3>Basic Level Python Developer</h3>
+                        <h4>MSME Technology Development Centre</h4>
+                    </div>
+                </div>
+                <!-- Cert 4 -->
+                <div class="timeline-item hidden-bottom" style="transition-delay: 300ms;">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>IBM Web Development Certification</h3>
+                        <h4>IBM</h4>
                     </div>
                 </div>
             </div>
@@ -247,10 +358,15 @@
                 <div class="timeline-item hidden-bottom">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
-                        <h3>Bachelor of Science in Computer Science</h3>
-                        <h4>University of Technology | 2016 - 2020</h4>
-                        <p>Graduated with First Class Honours. Specialized in Software Engineering and Web Technologies.
-                        </p>
+                        <h3>B.Sc. Computer Science (AI & Data Science)</h3>
+                        <h4>VET Institute of Arts and Science College, Erode | 2024 – 2027</h4>
+                    </div>
+                </div>
+                <div class="timeline-item hidden-bottom" style="transition-delay: 200ms;">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Higher Secondary Education (12th Standard)</h3>
+                        <h4>Completed in 2024</h4>
                     </div>
                 </div>
             </div>
@@ -294,7 +410,7 @@
                         <i class="fas fa-map-marker-alt"></i>
                         <div class="info">
                             <h4>Location</h4>
-                            <p>Tirupur, Tamil Nadu</p>
+                            <p>Erode, Tamil Nadu</p>
                         </div>
                     </div>
                 </div>
@@ -321,16 +437,18 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p>&copy; 2024 Sudharsan. All rights reserved.</p>
+                <p>&copy; 2026 Sudharsan S. All rights reserved.</p>
                 <div class="footer-socials">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="https://github.com/sudharsanselvarajj-maker" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/sudharsan-s-2b7571381?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/sudhar__1507?utm_source=qr&igsh=MTV5YzFhcnc5bzliMQ==" target="_blank"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <script src="hanging-id.js"></script>
+    <script src="skills-display.js"></script>
     <script src="script.js"></script>
 </body>
 
